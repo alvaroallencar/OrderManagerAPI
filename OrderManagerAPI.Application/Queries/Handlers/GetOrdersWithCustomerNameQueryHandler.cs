@@ -4,17 +4,12 @@ using OrderManagerAPI.Domain.Interfaces;
 
 namespace OrderManagerAPI.Application.Queries.Handlers;
 
-public class GetOrdersWithCustomerNameQueryHandler : IRequestHandler<GetOrdersWithCustomerNameQuery, IEnumerable<Order>>
+public class GetOrdersWithCustomerNameQueryHandler(IOrderRepository orderRepository)
+    : IRequestHandler<GetOrdersWithCustomerNameQuery, IEnumerable<Order>>
 {
-    private readonly IOrderRepository _orderRepository;
-
-    public GetOrdersWithCustomerNameQueryHandler(IOrderRepository orderRepository)
+    public async Task<IEnumerable<Order>> Handle(GetOrdersWithCustomerNameQuery request,
+        CancellationToken cancellationToken)
     {
-        _orderRepository = orderRepository;
-    }
-
-    public async Task<IEnumerable<Order>> Handle(GetOrdersWithCustomerNameQuery request, CancellationToken cancellationToken)
-    {
-        return await _orderRepository.GetOrdersWithCustomerNameAsync();
+        return await orderRepository.GetOrdersWithCustomerNameAsync();
     }
 }

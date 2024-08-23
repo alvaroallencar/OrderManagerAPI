@@ -4,5 +4,5 @@ namespace OrderManagerAPI.Application.Commands;
 
 public class CreateCustomerCommand : IRequest<int>
 {
-    public string Name { get; set; }
+    public required string Name { get; set; }
 }
