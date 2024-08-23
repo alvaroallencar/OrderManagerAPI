@@ -8,7 +8,7 @@ namespace OrderManagerAPI.Infrastructure.Repositories;
 
 public class OrderRepository(DapperDbContext dbContext) : IOrderRepository
 {
-    public async Task<int> AddOrderAsync(Order order)
+    public async Task<Order> AddOrderAsync(Order order)
     {
         const string sql = @"
         INSERT INTO Orders (CustomerId, Quantity, OrderDate) 
@@ -18,7 +18,9 @@ public class OrderRepository(DapperDbContext dbContext) : IOrderRepository
     ";
 
         using var connection = dbContext.CreateConnection();
-        return await connection.QuerySingleAsync<int>(sql, order);
+        order.OrderId = await connection.QuerySingleAsync<int>(sql, order);
+
+        return order;
     }
 
     public async Task<IEnumerable<Order>> GetOrdersByCustomerIdAsync(int customerId)

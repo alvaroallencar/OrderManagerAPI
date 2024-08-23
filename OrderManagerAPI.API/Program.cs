@@ -10,7 +10,11 @@ using OrderManagerAPI.Infrastructure.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers()
-    .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateCustomerCommandValidator>());
+    .AddFluentValidation(fv =>
+    {
+        fv.RegisterValidatorsFromAssemblyContaining<CreateCustomerCommandValidator>();
+        fv.RegisterValidatorsFromAssemblyContaining<CreateOrderCommandValidator>();
+    });
 
 builder.Services.AddMediatR(cfg => { cfg.RegisterServicesFromAssemblyContaining<CreateCustomerCommand>(); });
 

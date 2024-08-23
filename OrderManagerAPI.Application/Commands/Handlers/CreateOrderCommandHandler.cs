@@ -4,7 +4,7 @@ using OrderManagerAPI.Domain.Interfaces;
 
 namespace OrderManagerAPI.Application.Commands.Handlers;
 
-public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, int>
+public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Order>
 {
     private readonly IOrderRepository _orderRepository;
 
@@ -13,7 +13,7 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, int
         _orderRepository = orderRepository;
     }
 
-    public async Task<int> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
+    public async Task<Order> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
         var order = new Order
         {
@@ -21,7 +21,7 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, int
             Quantity = request.Quantity,
             OrderDate = request.OrderDate
         };
-        await _orderRepository.AddOrderAsync(order);
-        return order.OrderId;
+        var createdOder = await _orderRepository.AddOrderAsync(order);
+        return createdOder;
     }
 }
